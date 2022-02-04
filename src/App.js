@@ -28,8 +28,9 @@ function App() {
       ownerAddress[i] = usefulData[i]["owner_of"];
     }
     console.log(ownerAddress);
+    return ownerAddress;
   }
-
+  ["0x9dd061c8f5b88d712da59a5eb5b3214731c44394", "0x44fce80b50bf5414c24e56bcf5298d52dc6ed5de"]
   //getNFTOwners("0x6FA8291a2DEf477CA5Af262F00a2d33e3770052e");
   const { authenticate, isAuthenticated, user } = useMoralis();
   //const options = { address: "0x6FA8291a2DEf477CA5Af262F00a2d33e3770052e", chain: "eth" };
