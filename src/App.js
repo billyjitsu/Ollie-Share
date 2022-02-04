@@ -20,7 +20,10 @@ function App() {
   return (
     <div className="App">
       <ResponsiveAppBar/>
+      <Typography variant='h4' sx={{p:4, 'font-weight': 'bold'}}>Distributed Revenue</Typography>
+      <Typography variant='h6' sx={{color: 'Grey', p:0}}>These are your distributed revenues received from NFT projects as a token holder.</Typography>
       <div className='container'>
+        
         <CollapsibleTable/>
       </div>
     </div>

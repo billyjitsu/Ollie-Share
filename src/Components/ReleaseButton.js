@@ -5,7 +5,7 @@ import Button from '@mui/material/Button';
 export default function ReleaseButton({contract, account}) {
   return (
     <Stack spacing={2} direction="row">
-      <Button variant="contained" style={{"background-color": "CornflowerBlue"}}>Release</Button>
+      <Button variant="contained" >Release</Button>
     </Stack>
   );
 }

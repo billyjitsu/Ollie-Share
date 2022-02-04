@@ -173,11 +173,11 @@ const ResponsiveAppBar = () => {
           </Box>
           
           <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
-              </IconButton>
-            </Tooltip>
+
+              <Button size='large' color='info' variant='contained' sx={{ p: 1, "padding-left":20, "padding-right":20 } }>
+                CONNET WALLET
+              </Button>
+
             <Menu
               sx={{ mt: '45px' }}
               id="menu-appbar"

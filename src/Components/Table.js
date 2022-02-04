@@ -55,12 +55,10 @@ function Row(props) {
             {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
           </IconButton>
         </TableCell>
-        <TableCell component="th" scope="row">
-          {row.name}
-        </TableCell>
-        <TableCell align="left">{row.contract}</TableCell>
-        <TableCell align="center">{row.shares}</TableCell>
-        <TableCell align="center">{row.balance}</TableCell>
+        <TableCell component="th" scope="row"><Typography variant='h6' noWrap='true'>{row.name}</Typography></TableCell>
+        <TableCell align="left"><Typography variant='h6' noWrap='true' sx={{width: "200px"}}>{row.contract}</Typography></TableCell>
+        <TableCell align="center"><Typography variant='h6'>{row.shares}</Typography></TableCell>
+        <TableCell align="center"><Typography variant='h6'>{row.balance}</Typography></TableCell>
         <TableCell align="right"><ReleaseButton/></TableCell>
       </TableRow>
       <TableRow>
@@ -122,7 +120,7 @@ Row.propTypes = {
 };
 
 const rows = [
-  createData('Ollies Audition Tape', "0x6FA82...", 0.5, 0.1, 3.99),
+  createData('Ollies Audition Tape', "0x6FA8291a2DEf477CA5Af262F00a2d33e3770052e", 0.5, 0.1, 3.99),
   createData('Ice cream sandwich', 237, 9.0, 37, 4.3, 4.99),
   createData('Eclair', 262, 16.0, 24, 6.0, 3.79),
   createData('Cupcake', 305, 3.7, 67, 4.3, 2.5),
@@ -134,13 +132,13 @@ export default function CollapsibleTable() {
     <TableContainer component={Paper}>
       <Table aria-label="collapsible table">
         <TableHead>
-          <TableRow style={{"background-color": "CornflowerBlue"}}>
+          <TableRow>
             <TableCell />
-            <TableCell><TableLabel>NFT Project</TableLabel></TableCell>
-            <TableCell align="left"><TableLabel>CONTRACT</TableLabel></TableCell> 
-            <TableCell align="center"><TableLabel>Amount&nbsp;(MATIC)</TableLabel></TableCell>
-            <TableCell align="center"><TableLabel>Balance&nbsp;(MATIC)</TableLabel></TableCell>
-            <TableCell align="center"><TableLabel>Action</TableLabel></TableCell>
+            <TableCell><TableLabel><Typography variant='h6' sx={{"font-weight": "bold"}}>NFT PROJECT</Typography></TableLabel></TableCell>
+            <TableCell align="left"><TableLabel><Typography variant='h6' sx={{"font-weight": "bold"}}>CONTRACT</Typography></TableLabel></TableCell> 
+            <TableCell align="center"><TableLabel><Typography variant='h6' sx={{"font-weight": "bold"}}>Amount&nbsp;(MATIC)</Typography></TableLabel></TableCell>
+            <TableCell align="center"><TableLabel><Typography variant='h6' sx={{"font-weight": "bold"}}>BALANCE&nbsp;(MATIC)</Typography></TableLabel></TableCell>
+            <TableCell align="center"><TableLabel><Typography variant='h6' sx={{"font-weight": "bold"}}>ACTION</Typography></TableLabel></TableCell>
 
           </TableRow>
         </TableHead>
