@@ -3,11 +3,26 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import {
+  BrowserRouter,
+  Routes,
+  Route
+} from "react-router-dom";
+import RevenuesReceived from "./routes/revenuesReceived";
+import Distribute from "./routes/distribute";
+import Stats from "./routes/stats";
+import Explore from "./routes/explore";
 
 ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
+  <BrowserRouter>
+    <Routes>
+      <Route path="/" element={<App />}/>
+      <Route path="explore" element={<Explore />} />
+        <Route path="stats" element={<Stats />} />
+        <Route path="revenuesReceived" element={<RevenuesReceived />} />
+        <Route path="distribute" element={<Distribute />} />
+    </Routes>
+  </BrowserRouter>,
   document.getElementById('root')
 );
 

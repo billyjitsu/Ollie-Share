@@ -14,6 +14,7 @@ import MenuItem from '@mui/material/MenuItem';
 import SearchIcon from '@mui/icons-material/Search';
 import { styled, alpha } from '@mui/material/styles';
 import InputBase from '@mui/material/InputBase';
+import { Link, Outlet } from 'react-router-dom';
 
 const Search = styled('div')(({ theme }) => ({
     position: 'relative',
@@ -55,7 +56,13 @@ const SearchIconWrapper = styled('div')(({ theme }) => ({
     },
   }));
 
-const pages = ['Explore', 'Stats', 'Dashboard'];
+const pages = ['Explore', 'Stats', 'Distribute', 'Received'];
+const pages2 = [
+  {name: 'Explore', link: '/explore'},
+  {name: 'Stats', link: '/stats'},
+  {name: 'Distribute', link: '/distribute'},
+  {name: 'Received', link: '/revenuesReceived'},
+]
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
 const ResponsiveAppBar = () => {
@@ -161,14 +168,18 @@ const ResponsiveAppBar = () => {
           </Search>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex', justifyContent: "flex" } }}>
           
-            {pages.map((page) => (
-              <Button
-                key={page}
+            {pages2.map((page) => (
+              
+                <Link to={page.link} style={{ textDecoration: 'none' }}>
+                  <Button
+                key={page.name}
                 onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: 'white', display: 'block' , width: "150px"}}
+                sx={{ my: 2, color: 'white', display: 'block' , width: "110px"}}
               >
-                {page}
-              </Button>
+                  {page.name}
+                  </Button>
+                </Link>
+          
             ))}
           </Box>
           

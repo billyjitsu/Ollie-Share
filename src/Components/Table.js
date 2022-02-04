@@ -59,7 +59,7 @@ function Row(props) {
         <TableCell align="left"><Typography variant='h6' noWrap='true' sx={{width: "200px"}}>{row.contract}</Typography></TableCell>
         <TableCell align="center"><Typography variant='h6'>{row.shares}</Typography></TableCell>
         <TableCell align="center"><Typography variant='h6'>{row.balance}</Typography></TableCell>
-        <TableCell align="right"><ReleaseButton/></TableCell>
+        <TableCell align="center"><ReleaseButton/></TableCell>
       </TableRow>
       <TableRow>
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
