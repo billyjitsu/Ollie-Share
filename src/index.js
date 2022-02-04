@@ -12,8 +12,10 @@ import RevenuesReceived from "./routes/revenuesReceived";
 import Distribute from "./routes/distribute";
 import Stats from "./routes/stats";
 import Explore from "./routes/explore";
+import { MoralisProvider } from "react-moralis";
 
 ReactDOM.render(
+  <MoralisProvider appId="lfQoEom8LYx3n5vXZB3yanagvNNEij55RpwHUTtE" serverUrl="https://nqel3zbuyyn9.usemoralis.com:2053/server">
   <BrowserRouter>
     <Routes>
       <Route path="/" element={<App />}/>
@@ -22,7 +24,8 @@ ReactDOM.render(
         <Route path="revenuesReceived" element={<RevenuesReceived />} />
         <Route path="distribute" element={<Distribute />} />
     </Routes>
-  </BrowserRouter>,
+  </BrowserRouter>
+  </MoralisProvider>,
   document.getElementById('root')
 );
 

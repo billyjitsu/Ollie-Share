@@ -15,6 +15,8 @@ import SearchIcon from '@mui/icons-material/Search';
 import { styled, alpha } from '@mui/material/styles';
 import InputBase from '@mui/material/InputBase';
 import { Link, Outlet } from 'react-router-dom';
+import ollie from "./Ollie.png";
+import { useMoralis } from "react-moralis";
 
 const Search = styled('div')(({ theme }) => ({
     position: 'relative',
@@ -99,11 +101,13 @@ const ResponsiveAppBar = () => {
   },
 }));
 
+  const { authenticate, logout, isAuthenticated, user } = useMoralis();
+
   return (
     <AppBar position="static">
       <Container maxWidth="xl">
         <Toolbar disableGutters >
-        <img src={require('./Ollie.png')} width="50px" height="50px" style={{"margin-right": "20px"}}/>
+        <img src={ollie} width="50px" height="50px" style={{"margin-right": "20px"}}/>
           <Typography
             variant="h6"
             noWrap
@@ -185,9 +189,9 @@ const ResponsiveAppBar = () => {
           
           <Box sx={{ flexGrow: 0 }}>
 
-              <Button size='large' color='info' variant='contained' sx={{ p: 1, "padding-left":20, "padding-right":20 } }>
-                CONNET WALLET
-              </Button>
+            {isAuthenticated? 
+              <Button size='large' color='info' variant='contained' sx={{ p: 1, "padding-left":20, "padding-right":20 } } onClick={() => logout()}>Logout</Button>:
+              <Button size='large' color='info' variant='contained' sx={{ p: 1, "padding-left":20, "padding-right":20 } } onClick={() => authenticate()}>Login</Button>}
 
             <Menu
               sx={{ mt: '45px' }}
