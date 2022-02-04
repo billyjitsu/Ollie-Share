@@ -14,6 +14,34 @@ import { Button } from '@mui/material';
 function App() {
   const {Moralis} = useMoralis();
 
+  const getAccountNFTProjects = async () => {
+    let options = {
+      contractAddress: "0xb9A178E782b6fc998Aa556686428a96379087777",
+      functionName: "getAccountNFTProjects",
+      abi: [{
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "account",
+            "type": "address"
+          }
+        ],
+        "name": "getAccountNFTProjects",
+        "outputs": [
+          {
+            "internalType": "address[]",
+            "name": "",
+            "type": "address[]"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      }],
+      params:{account: "0x9dd061c8f5b88d712da59a5eb5b3214731c44394"}
+    }
+    let message = await Moralis.executeFunction(options);
+    console.log("From SMART CONTRACT:" + message);
+  }
   
 
   const getNFTOwners = async (NFTAddress) => {
@@ -30,7 +58,7 @@ function App() {
     console.log(ownerAddress);
     return ownerAddress;
   }
-  ["0x9dd061c8f5b88d712da59a5eb5b3214731c44394", "0x44fce80b50bf5414c24e56bcf5298d52dc6ed5de"]
+ // ["0x9dd061c8f5b88d712da59a5eb5b3214731c44394", "0x44fce80b50bf5414c24e56bcf5298d52dc6ed5de"]
   //getNFTOwners("0x6FA8291a2DEf477CA5Af262F00a2d33e3770052e");
   const { authenticate, isAuthenticated, user } = useMoralis();
   //const options = { address: "0x6FA8291a2DEf477CA5Af262F00a2d33e3770052e", chain: "eth" };
@@ -58,7 +86,8 @@ function App() {
       <Link to="/landing">Landing</Link>
       <Link to="/revenuesReceived">Revenues Received</Link>
       <Link to="/distribute">Distribute Revenue</Link>
-      <Button onClick={()=>{getNFTOwners("0x6FA8291a2DEf477CA5Af262F00a2d33e3770052e")}}>Test</Button>
+      <Button onClick={()=>{getNFTOwners("0x6FA8291a2DEf477CA5Af262F00a2d33e3770052e")}}>Test get NFT owners</Button>
+      <Button onClick={()=>{getAccountNFTProjects()}}>Test get NFT projects</Button>
       
     </div>
   );
