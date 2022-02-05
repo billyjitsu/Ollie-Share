@@ -10,8 +10,6 @@ import { ceil } from 'mathjs';
 import LoadingButton from '@mui/lab/LoadingButton';
 import SaveIcon from '@mui/icons-material/Save';
 
-
-
 const Distribute = () => {
   //States
   const [NFTContract, setNFTContract] = useState(null);
@@ -22,6 +20,8 @@ const Distribute = () => {
   const [isUpdatingNFTContract, setIsUpdatingNFTContract] = useState(false);
   var [uniqueNFTOwners, setUniqueNFTOwners] = useState(['1','2','3']); //TODO no idea why this isn't working :(
   var [holderShareCount, setHolderShareCount] = useState([1,2,3,4]);
+  var [sharePool, setSharePool] = useState(0);
+  var [distributionAmount, setDistributionAmount]=useState(null);
   
   function updateNFTContractAddress(e){
     setNFTContract(e.target.value);
@@ -30,6 +30,12 @@ const Distribute = () => {
 
   function handleChangeNetwork(e){
     setNetwork(e.target.value);
+  }
+
+  async function handleChangeAmount(e){
+    await setDistributionAmount(e.target.value);
+    distributionAmount = e.target.value;
+    console.log("Distributing: " + distributionAmount);
   }
 
   function distributeHandler(){
@@ -43,6 +49,7 @@ const Distribute = () => {
     console.log(uniqueNFTOwners);
   }
 
+  //generate share count for each owners
   function generateShareCount(allTokenOwners){
       const counts = {};
       allTokenOwners.forEach((x) => {
@@ -100,7 +107,9 @@ const Distribute = () => {
       //do the usual processing
     }
 
-    
+    setSharePool(ownerAddress.length);
+    sharePool = ownerAddress.length;
+    console.log("Total share pool: " + sharePool);
     //console.log(ownerAddress);
     generateShareCount(ownerAddress);
     let uniqueOwners = [...new Set(ownerAddress)];
@@ -119,6 +128,57 @@ const Distribute = () => {
     updateUniqueNFTOwners(uniqueOwners);
     return ownerAddress;
   }
+
+  const scAddDistributedPayment = async (NFTAddress, address, shares, totalSharePool, amount) => {
+    let options = {
+      contractAddress: "0xb9A178E782b6fc998Aa556686428a96379087777",
+      functionName: "addDistributedPayment",
+      abi: [{
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "contractAddress",
+            "type": "address"
+          },
+          {
+            "internalType": "address[]",
+            "name": "account",
+            "type": "address[]"
+          },
+          {
+            "internalType": "uint256[]",
+            "name": "share",
+            "type": "uint256[]"
+          },
+          {
+            "internalType": "uint256",
+            "name": "totalShares",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "paymentAmount",
+            "type": "uint256"
+          }
+        ],
+        "name": "addDistributedPayment",
+        "outputs": [],
+        "stateMutability": "payable",
+        "type": "function"
+      }],
+      params:{
+        contractAddress: NFTAddress,
+        account: address,
+        share: shares,
+        totalShares: totalSharePool,
+        paymentAmount: Moralis.Units.ETH(amount)
+      },
+      msgValue: Moralis.Units.ETH(amount)
+    }
+    let message = await Moralis.executeFunction(options);
+    console.log("From SMART CONTRACT:" + message);
+  }
+
   return <div>
    
   <ResponsiveAppBar/>
@@ -187,8 +247,8 @@ const Distribute = () => {
           </Box>
           {dataRetrieved?
             <Box sx={{backgroundColor: 'white', paddingTop:2, display:'baseline'}}>
-              <TextField required id='distribute-amount' label='Distribute Amount (MATIC)' variant='outlined' sx={{width:400, marginRight:4, marginTop:1}}/>
-              <Button size='large' variant='contained'sx={{padding:1.8, marginTop:1, width:120}} onClick={distributeHandler} >Distribute</Button>
+              <TextField required id='distribute-amount' label='Distribute Amount (MATIC)' variant='outlined' sx={{width:400, marginRight:4, marginTop:1}} onChange={ (e) => {handleChangeAmount(e)}}/>
+              <Button size='large' variant='contained'sx={{padding:1.8, marginTop:1, width:120}} onClick={async()=>{scAddDistributedPayment(NFTContract, uniqueNFTOwners,holderShareCount,sharePool,distributionAmount)}} >Distribute</Button>
             </Box>: <h6></h6>
           }
         </Box>
