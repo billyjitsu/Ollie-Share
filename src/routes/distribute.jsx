@@ -2,14 +2,14 @@ import React from 'react';
 import { Button, InputLabel, TextField, Typography } from '@mui/material';
 import ResponsiveAppBar from '../Components/MenuBar';
 import { useMoralis } from "react-moralis";
-import { Box, padding } from '@mui/system';
+import { Box } from '@mui/system';
 import { useState } from 'react';
 import { Select } from '@mui/material';
 import { MenuItem } from '@mui/material';
 import { ceil } from 'mathjs';
 import LoadingButton from '@mui/lab/LoadingButton';
 import SaveIcon from '@mui/icons-material/Save';
-import ComponentTest from '../Components/componentTest';
+
 
 
 const Distribute = () => {
@@ -21,14 +21,11 @@ const Distribute = () => {
   const [network, setNetwork] = useState(null);
   const [isUpdatingNFTContract, setIsUpdatingNFTContract] = useState(false);
   var [uniqueNFTOwners, setUniqueNFTOwners] = useState(['1','2','3']); //TODO no idea why this isn't working :(
+  var [holderShareCount, setHolderShareCount] = useState([1,2,3,4]);
   
   function updateNFTContractAddress(e){
     setNFTContract(e.target.value);
     //console.log("User typed: "+ e.target.value);
-  }
-
-  function NFTContractAddressHandler(address){
-    console.log("Submitting: " + address);
   }
 
   function handleChangeNetwork(e){
@@ -46,14 +43,32 @@ const Distribute = () => {
     console.log(uniqueNFTOwners);
   }
 
+  function generateShareCount(allTokenOwners){
+      const counts = {};
+      allTokenOwners.forEach((x) => {
+        counts[x] = (counts[x] || 0) + 1;
+      });
+      console.log(counts)
+
+      let shareCount = Object.values(counts);
+      console.log(shareCount);
+
+      updateHolderShareCount(shareCount);
+
+  }
+
+  function updateHolderShareCount(data){
+    setHolderShareCount(data);
+    holderShareCount = data
+    console.log("Let's see");
+    console.log(holderShareCount);
+  }
+
 
   //Moralis Stuff
   const {Moralis} = useMoralis();
   const getNFTOwners = async (NFTAddress, NFTNetwork) => {
     setIsUpdatingNFTContract(true);
-    //console.log(allNFT);
-    //reset to empty array
-    //setAllNFT([]);
 
     const message = await Moralis.Web3API.token.getNFTOwners({chain: NFTNetwork,format: "decimal", address: NFTAddress});
     //console.log(message);
@@ -87,20 +102,18 @@ const Distribute = () => {
 
     
     //console.log(ownerAddress);
+    generateShareCount(ownerAddress);
     let uniqueOwners = [...new Set(ownerAddress)];
     //get project details
     let projectName = message.result[0]["name"];
     //console.log("Project: " + projectName);
     setNFTProjectName(projectName);
 
-    setNFTOwners(uniqueOwners.length); //TODO: SELECT UNIQUE ADDRESS ONLY
+    setNFTOwners(uniqueOwners.length);
 
     setDataRetrieved(false);
     setDataRetrieved(true);
 
-    // for (let i=0; i < dataSize; i++){
-    //   ownerAddress[i] = usefulData[i]["owner_of"];
-    // }
     setIsUpdatingNFTContract(false);
 
     updateUniqueNFTOwners(uniqueOwners);
