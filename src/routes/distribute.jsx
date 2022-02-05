@@ -9,6 +9,8 @@ import { MenuItem } from '@mui/material';
 import { ceil } from 'mathjs';
 import LoadingButton from '@mui/lab/LoadingButton';
 import SaveIcon from '@mui/icons-material/Save';
+import { Snackbar } from '@mui/material';
+import { Alert } from '@mui/material';
 
 const Distribute = () => {
   //States
@@ -73,10 +75,11 @@ const Distribute = () => {
 
 
   //Moralis Stuff
-  const {Moralis} = useMoralis();
+  const {Moralis, isAuthenticated} = useMoralis();
   const getNFTOwners = async (NFTAddress, NFTNetwork) => {
+    try{
     setIsUpdatingNFTContract(true);
-
+    
     const message = await Moralis.Web3API.token.getNFTOwners({chain: NFTNetwork,format: "decimal", address: NFTAddress});
     //console.log(message);
 
@@ -126,7 +129,17 @@ const Distribute = () => {
     setIsUpdatingNFTContract(false);
 
     updateUniqueNFTOwners(uniqueOwners);
-    return ownerAddress;
+  } catch (err){
+    if (err.message == "Cannot read properties of undefined (reading 'name')"){
+      alert("Invalid contract address");
+    } else {
+      alert(err.message);
+    }
+    
+    console.log(err);
+    setIsUpdatingNFTContract(false);
+  }
+    //return ownerAddress;
   }
 
   const scAddDistributedPayment = async (NFTAddress, address, shares, totalSharePool, amount) => {
@@ -175,8 +188,15 @@ const Distribute = () => {
       },
       msgValue: Moralis.Units.ETH(amount)
     }
-    let message = await Moralis.executeFunction(options);
-    console.log("From SMART CONTRACT:" + message);
+    try {
+      let message = await Moralis.executeFunction(options);
+      alert("Transaction successful!");
+    } catch(err) {
+      alert(err.message);
+      console.log(err);
+    }
+    
+    //console.log("From SMART CONTRACT:" + message);
   }
 
   return <div>
@@ -189,6 +209,7 @@ const Distribute = () => {
     
     
     <Box sx={{display: 'flex', justifyContent: 'center'}}>
+      {isAuthenticated?
       <Box sx={{ backgroundColor: 'white', border:'1px solid lightGrey', padding:10, margin:10, display: 'flex',
           justifyContent: 'center', maxWidth:1000, borderRadius:2, boxShadow: '2px 1px 10px 1px rgba(0, 0, 0, .1);'}}>
             
@@ -253,6 +274,10 @@ const Distribute = () => {
           }
         </Box>
       </Box>
+
+      :
+      <Typography variant='subtitle1' sx={{fontSize:30, p:30}}>Please login to continue</Typography>
+        }
     </Box>
 
 </div>;
