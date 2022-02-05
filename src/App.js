@@ -5,6 +5,7 @@ import ResponsiveAppBar from './Components/MenuBar';
 import { Link, Outlet } from 'react-router-dom';
 import { useMoralis } from "react-moralis";
 import { Button } from '@mui/material';
+import GetAccountNFTProjects from './Components/AsyncFunctions/GetAccountNFTProjects';
 //import Moralis from 'moralis/types';
 
 
@@ -88,6 +89,7 @@ function App() {
       <Link to="/distribute">Distribute Revenue</Link>
       <Button onClick={()=>{getNFTOwners("0x6FA8291a2DEf477CA5Af262F00a2d33e3770052e")}}>Test get NFT owners</Button>
       <Button onClick={()=>{getAccountNFTProjects()}}>Test get NFT projects</Button>
+
       
     </div>
   );

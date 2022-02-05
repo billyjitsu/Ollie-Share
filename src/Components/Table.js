@@ -55,8 +55,8 @@ function Row(props) {
             {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
           </IconButton>
         </TableCell>
-        <TableCell component="th" scope="row"><Typography variant='h6' noWrap='true'>{row.name}</Typography></TableCell>
-        <TableCell align="left"><Typography variant='h6' noWrap='true' sx={{width: "200px"}}>{row.contract}</Typography></TableCell>
+        <TableCell component="th" scope="row"><Typography variant='h6' noWrap={true}>{row.name}</Typography></TableCell>
+        <TableCell align="left"><Typography variant='h6' noWrap={true} sx={{width: "200px"}}>{row.contract}</Typography></TableCell>
         <TableCell align="center"><Typography variant='h6'>{row.shares}</Typography></TableCell>
         <TableCell align="center"><Typography variant='h6'>{row.balance}</Typography></TableCell>
         <TableCell align="center"><ReleaseButton/></TableCell>

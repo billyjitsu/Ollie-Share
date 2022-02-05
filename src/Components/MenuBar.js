@@ -110,7 +110,7 @@ const ResponsiveAppBar = () => {
         <img src={ollie} width="50px" height="50px" style={{"margin-right": "20px"}}/>
           <Typography
             variant="h6"
-            noWrap
+            noWrap={false}
             component="div"
             sx={{ mr: 2, display: { xs: 'none', md: 'flex' } }}
           >
@@ -155,7 +155,7 @@ const ResponsiveAppBar = () => {
           </Box>
           <Typography
             variant="h6"
-            noWrap
+            noWrap={false}
             component="div"
             sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}
           >
