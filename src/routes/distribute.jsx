@@ -1,12 +1,16 @@
 import React from 'react';
 import { Button, InputLabel, TextField, Typography } from '@mui/material';
-import CollapsibleTable from '../Components/Table';
 import ResponsiveAppBar from '../Components/MenuBar';
 import { useMoralis } from "react-moralis";
 import { Box, padding } from '@mui/system';
 import { useState } from 'react';
 import { Select } from '@mui/material';
 import { MenuItem } from '@mui/material';
+import { ceil } from 'mathjs';
+import LoadingButton from '@mui/lab/LoadingButton';
+import SaveIcon from '@mui/icons-material/Save';
+import ComponentTest from '../Components/componentTest';
+
 
 const Distribute = () => {
   //States
@@ -15,6 +19,8 @@ const Distribute = () => {
   const [NFTOwners, setNFTOwners] = useState(null);
   const [dataRetrieved, setDataRetrieved] = useState(false);
   const [network, setNetwork] = useState(null);
+  const [isUpdatingNFTContract, setIsUpdatingNFTContract] = useState(false);
+  var [uniqueNFTOwners, setUniqueNFTOwners] = useState(['1','2','3']); //TODO no idea why this isn't working :(
   
   function updateNFTContractAddress(e){
     setNFTContract(e.target.value);
@@ -29,29 +35,79 @@ const Distribute = () => {
     setNetwork(e.target.value);
   }
 
+  function distributeHandler(){
+    console.log("Showing Unique owners only: " +uniqueNFTOwners);
+  }
+
+  function updateUniqueNFTOwners(data){
+    console.log(data);
+    setUniqueNFTOwners(data);
+    uniqueNFTOwners= data;
+    console.log(uniqueNFTOwners);
+  }
+
+
   //Moralis Stuff
   const {Moralis} = useMoralis();
   const getNFTOwners = async (NFTAddress, NFTNetwork) => {
+    setIsUpdatingNFTContract(true);
+    //console.log(allNFT);
+    //reset to empty array
+    //setAllNFT([]);
+
     const message = await Moralis.Web3API.token.getNFTOwners({chain: NFTNetwork,format: "decimal", address: NFTAddress});
     //console.log(message);
-    const usefulData = message.result;
-    let dataSize = usefulData.length;
-    let ownerAddress = [dataSize];
 
-    let projectName = usefulData[0]["name"];
-    console.log("Project: " + projectName);
+    //push array to allNFT first
+    let ownerAddress = [message.result.length];
+    for (let i=0; i < message.result.length; i++){
+      ownerAddress[i] = message.result[i]["owner_of"];
+    }
+
+    let totalNFT = message.total;
+
+    if(totalNFT>500){
+      //get total page required
+      let lastPage = ceil(totalNFT/500);
+      //let cursor = message.cursor;
+      let offset = 500;
+      for(let j=1; j < lastPage; j++){
+        let res = await Moralis.Web3API.token.getNFTOwners({chain: NFTNetwork,format: "decimal", address: NFTAddress, offset: offset});
+        offset+= 500;
+        let nextOwnerAddress = [res.result.length];
+          for (let k=0; k < res.result.length; k++){
+            nextOwnerAddress[k] = res.result[k]["owner_of"];
+          }
+          ownerAddress = ownerAddress.concat(nextOwnerAddress);
+      }
+
+    } else {
+      //do the usual processing
+    }
+
+    
+    //console.log(ownerAddress);
+    let uniqueOwners = [...new Set(ownerAddress)];
+    //get project details
+    let projectName = message.result[0]["name"];
+    //console.log("Project: " + projectName);
     setNFTProjectName(projectName);
-    setNFTOwners(dataSize);
+
+    setNFTOwners(uniqueOwners.length); //TODO: SELECT UNIQUE ADDRESS ONLY
+
     setDataRetrieved(false);
     setDataRetrieved(true);
 
-    for (let i=0; i < dataSize; i++){
-      ownerAddress[i] = usefulData[i]["owner_of"];
-    }
-    console.log(ownerAddress);
+    // for (let i=0; i < dataSize; i++){
+    //   ownerAddress[i] = usefulData[i]["owner_of"];
+    // }
+    setIsUpdatingNFTContract(false);
+
+    updateUniqueNFTOwners(uniqueOwners);
     return ownerAddress;
   }
   return <div>
+   
   <ResponsiveAppBar/>
     <Typography align='center' variant='h4' sx={{p:4, 'font-weight': 'bold'}}>Distribute Revenues</Typography>
     <Typography align='center' variant='h6' sx={{color: 'Grey', p:0}}>
@@ -76,6 +132,7 @@ const Distribute = () => {
               variant="standard"
             >
               <MenuItem value={"eth"}>Ethereum Mainnet</MenuItem>
+              <MenuItem value={"rinkeby"}>Rinkeby Test Network</MenuItem>
               <MenuItem value={"polygon"}>Polygon</MenuItem>
               <MenuItem value={"mumbai"}>Mumbai Testnet</MenuItem>
             </Select>
@@ -98,13 +155,27 @@ const Distribute = () => {
           }
           
           <Box sx={{backgroundColor: 'white', paddingTop:2, display:'baseline'}}>
-            <TextField required id='nft-contract-address' label='NFT Contract Address (Polygon)' variant='outlined' sx={{width:400, marginRight:4, marginTop:1}} onChange={updateNFTContractAddress}/>
+            <TextField required id='nft-contract-address' label='NFT Contract Address' variant='outlined' sx={{width:400, marginRight:4, marginTop:1}} onChange={updateNFTContractAddress}/>
+            {isUpdatingNFTContract?
+              <LoadingButton
+                loading
+                loadingPosition="start"
+                startIcon={<SaveIcon />}
+                variant="contained"
+                sx={{padding:1.8, marginTop:1, width:120}}
+                size='large'
+              >
+                Fetching...
+              </LoadingButton>
+            :
             <Button size='large' variant='contained'sx={{padding:1.8, marginTop:1, width:120}} onClick={async()=>{await getNFTOwners(NFTContract, network)}} >Retrieve</Button>
+            }
+            
           </Box>
           {dataRetrieved?
             <Box sx={{backgroundColor: 'white', paddingTop:2, display:'baseline'}}>
               <TextField required id='distribute-amount' label='Distribute Amount (MATIC)' variant='outlined' sx={{width:400, marginRight:4, marginTop:1}}/>
-              <Button size='large' variant='contained'sx={{padding:1.8, marginTop:1, width:120}} >Distribute</Button>
+              <Button size='large' variant='contained'sx={{padding:1.8, marginTop:1, width:120}} onClick={distributeHandler} >Distribute</Button>
             </Box>: <h6></h6>
           }
         </Box>
