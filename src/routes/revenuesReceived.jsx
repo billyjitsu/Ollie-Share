@@ -6,7 +6,7 @@ import { useMoralis } from "react-moralis";
 import { useState, useEffect } from 'react';
 import { Button } from '@mui/material';
 import DataTable from '../Components/DataTable';
-import { getNFTOptions, getReleasedOptions, getAmountOptions, releaseOption } from '../Components/ScData';
+import { getNFTOptions, getReleasedOptions, getAmountOptions, releaseOption, shareDistributionLengthOption,payeeShareAtDistributionOption, totalDistributedShares, distributedSum } from '../Components/ScData';
 import DistributionTable from '../Components/DistributionTable';
 import DistributionTableItem from '../Components/DistributionTableItem';
 
@@ -54,34 +54,49 @@ const RevenuesReceived = (props) => {
               balance: released[i],
               revenue: distributed[i],
               history: [
-                {
-                  date: '2020-01-05',
-                  distId: '11091700',
-                  shares: 3,
-                },
-                {
-                  date: '2020-01-02',
-                  distId: 'Anonymous',
-                  shares: 1,
-                },
+                // {
+                //   date: '2020-01-05',
+                //   distId: '11091700',
+                //   shares: 3,
+                // },
+                // {
+                //   date: '2020-01-02',
+                //   distId: 'Anonymous',
+                //   shares: 1,
+                // },
               ],
+            }
+            
+            let distLength = await Moralis.executeFunction(shareDistributionLengthOption(NFTProjects[i], userAddress));
+            for (let j=0; j < distLength; j++){
+              let share =  await Moralis.executeFunction(payeeShareAtDistributionOption(NFTProjects[i], userAddress,j));
+              let totalShareAtThisDist = await Moralis.executeFunction(totalDistributedShares(NFTProjects[i],j));
+              let totalDistributedSum = await Moralis.executeFunction(distributedSum(NFTProjects[i], j));
+              //let payout = share * totalDistributedSum / totalShareAtThisDist; //due to bignumber
+              let history = {
+                id: j,
+                share: parseFloat(Moralis.Units.FromWei( share._hex,0)),
+                pool: parseFloat(Moralis.Units.FromWei( totalShareAtThisDist._hex,0)),
+                payout: parseFloat(Moralis.Units.FromWei( share._hex,0)) * parseFloat(Moralis.Units.FromWei( totalDistributedSum._hex,18)) / parseFloat(Moralis.Units.FromWei( totalShareAtThisDist._hex,0))
+              }
+              item.history.push(history)
             }
             accountReceivedData[i] = item;
         }
-        //let distributedAmount = await Moralis.executeFunction(options);
-        console.log("Project: " + NFTProjects);
-        console.log("Distributed: "+ distributed);
-        console.log("Released"+ released);
+ 
+        //console.log("Project: " + NFTProjects);
+        //console.log("Distributed: "+ distributed);
+        //console.log("Released"+ released);
 
         console.log(accountReceivedData);
         //console.log(JSON.stringify(accountReceivedData));
 
         setRevenue(accountReceivedData);
         //revenue = accountReceivedData; //TODO: how to pass this data to Table and render as a Table??
-        console.log("From revenue:");
-        console.log(revenue);
+        //console.log("From revenue:");
+       // console.log(revenue);
         setRevenue((state) => {
-          console.log(state); // "React is awesome!"
+          //console.log(state); // "React is awesome!"
           setData(state);
           console.log("from data:")
           console.log(data);

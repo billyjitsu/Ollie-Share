@@ -89,7 +89,7 @@ export function getAmountOptions (singleNFTContract, address){
       }],
       params:{account: address}
     }
-    console.log(options);
+    //console.log(options);
     return options;
   }
 
@@ -124,7 +124,7 @@ export function getAmountOptions (singleNFTContract, address){
       }],
       params:{contractAddress: singleNFTContract, account: address}
     }
-    console.log(options);
+    //console.log(options);
     return options;
   }
 
@@ -163,7 +163,7 @@ export function getAmountOptions (singleNFTContract, address){
       }],
       params:{contractAddress: singleNFTContract, account: address, distributionId: id}
     }
-    console.log(options);
+    //console.log(options);
     return options;
   }
 
@@ -191,6 +191,74 @@ export function getAmountOptions (singleNFTContract, address){
       }],
       params:{contractAddress: singleNFTContract, account: address}
     }
-    console.log(options);
+    //console.log(options);
+    return options;
+  }
+
+  export function totalDistributedShares(singleNFTContract, id){
+    let options = {
+      contractAddress: "0xb9A178E782b6fc998Aa556686428a96379087777",
+      functionName: "getTotalDistributedShares",
+      abi: [{
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "contractAddress",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "distributionId",
+            "type": "uint256"
+          }
+        ],
+        "name": "getTotalDistributedShares",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      }],
+      params:{contractAddress: singleNFTContract, distributionId: id}
+    }
+    //console.log(options);
+    return options;
+  }
+
+  export function distributedSum(singleNFTContract, id){
+    let options = {
+      contractAddress: "0xb9A178E782b6fc998Aa556686428a96379087777",
+      functionName: "getDistributedSum",
+      abi: [{
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "contractAddress",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "distributionId",
+            "type": "uint256"
+          }
+        ],
+        "name": "getDistributedSum",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      }],
+      params:{contractAddress: singleNFTContract, distributionId: id}
+    }
+    //console.log(options);
     return options;
   }
