@@ -17,6 +17,8 @@ import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import { TableLabel } from './TableElement';
 import ReleaseButton from './ReleaseButton';
 
+import { useMoralis } from "react-moralis";
+
 function createData(name, contract, shares, balance, revenue) {
   return {
     name,
@@ -40,6 +42,7 @@ function createData(name, contract, shares, balance, revenue) {
 }
 
 function Row(props) {
+  const {Moralis} = useMoralis();
   const { row } = props;
   const [open, setOpen] = React.useState(false);
 
@@ -58,7 +61,7 @@ function Row(props) {
         <TableCell component="th" scope="row"><Typography variant='h6' noWrap={true}>{row.name}</Typography></TableCell>
         <TableCell align="left"><Typography variant='h6' noWrap={true} sx={{width: "200px"}}>{row.contract}</Typography></TableCell>
         <TableCell align="center"><Typography variant='h6'>{row.shares}</Typography></TableCell>
-        <TableCell align="center"><Typography variant='h6'>{row.balance}</Typography></TableCell>
+        <TableCell align="center"><Typography variant='h6'>{row.revenue? Moralis.Units.FromWei( row.revenue._hex,18)  : "Loading..."}</Typography></TableCell>
         <TableCell align="center"><ReleaseButton/></TableCell>
       </TableRow>
       <TableRow>
@@ -87,7 +90,7 @@ function Row(props) {
                       <TableCell>{historyRow.distId}</TableCell>
                       <TableCell align="right">{historyRow.shares}</TableCell>
                       <TableCell align="right">
-                        {Math.round(historyRow.shares * row.revenue * 100) / 100}
+                       WHAT
                       </TableCell>
                     </TableRow>
                   ))}
@@ -118,16 +121,17 @@ Row.propTypes = {
 
   }).isRequired,
 };
+//const rows = [];
+// const rows = [
+//   createData('Ollies Audition Tape', "0x6FA8291a2DEf477CA5Af262F00a2d33e3770052e", 0.5, 0.1, 3.99),
+//   createData('Ice cream sandwich', 237, 9.0, 37, 4.3, 4.99),
+//   createData('Eclair', 262, 16.0, 24, 6.0, 3.79),
+//   createData('Cupcake', 305, 3.7, 67, 4.3, 2.5),
+//   createData('Gingerbread', 356, 16.0, 49, 3.9, 1.5),
+// ];
 
-const rows = [
-  createData('Ollies Audition Tape', "0x6FA8291a2DEf477CA5Af262F00a2d33e3770052e", 0.5, 0.1, 3.99),
-  createData('Ice cream sandwich', 237, 9.0, 37, 4.3, 4.99),
-  createData('Eclair', 262, 16.0, 24, 6.0, 3.79),
-  createData('Cupcake', 305, 3.7, 67, 4.3, 2.5),
-  createData('Gingerbread', 356, 16.0, 49, 3.9, 1.5),
-];
-
-export default function CollapsibleTable() {
+export default function CollapsibleTable({rows}) {
+  
   return (
     <TableContainer component={Paper}>
       <Table aria-label="collapsible table">
@@ -143,9 +147,9 @@ export default function CollapsibleTable() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
+          {rows? rows.map((row) => (
             <Row key={row.name} row={row} />
-          ))}
+          )): "Loading"}
         </TableBody>
       </Table>
     </TableContainer>
