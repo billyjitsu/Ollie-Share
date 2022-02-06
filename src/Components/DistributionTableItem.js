@@ -8,6 +8,13 @@ import { styled } from '@mui/material/styles';
 import { Box } from '@mui/system';
 import React from 'react';
 import { useMoralis } from "react-moralis";
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import Paper from '@mui/material/Paper';
 
 const Accordion = styled((props) => (
     <MuiAccordion disableGutters elevation={0} square {...props} />
@@ -90,10 +97,43 @@ const DistributionTableItem = ({data, onWithdraw}) => {
         </Box>
         </AccordionSummary>
         <AccordionDetails>
-          <Typography>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-            malesuada lacus ex, sit amet blandit leo lobortis eget.
-          </Typography>
+          
+        {data.history? 
+
+            <TableContainer component={Paper}>
+                <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                    <TableHead>
+                    <TableRow>
+                        <TableCell>ID</TableCell>
+                        <TableCell align="right">Token Owned</TableCell>
+                        <TableCell align="right">Pool</TableCell>
+                        <TableCell align="right">Revenue&nbsp;(MATIC)</TableCell>
+        
+                    </TableRow>
+                    </TableHead>
+                    <TableBody>
+                    {data.history.map((row) => (
+                        <TableRow
+                        key={row.id}
+                        sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                        >
+                        <TableCell component="th" scope="row">
+                            {row.id}
+                        </TableCell>
+                        <TableCell align="right">{row.share}</TableCell>
+                        <TableCell align="right">{row.pool}</TableCell>
+                        <TableCell align="right">{row.payout}</TableCell>
+              
+                        </TableRow>
+                    ))}
+                    </TableBody>
+                </Table>
+                </TableContainer>
+                : <h6> </h6>
+                    }
+
+
+
         </AccordionDetails>
       </Accordion>
         
