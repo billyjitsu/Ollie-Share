@@ -12,7 +12,7 @@ const ComponentTest = () => {
     }
 
     updateArray();
-  return <div></div>;
+  return <div><h2>Component Test</h2></div>;
 };
 
 export default ComponentTest;
