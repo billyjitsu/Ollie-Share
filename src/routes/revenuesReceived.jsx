@@ -79,6 +79,7 @@ const RevenuesReceived = (props) => {
                 pool: parseFloat(Moralis.Units.FromWei( totalShareAtThisDist._hex,0)),
                 payout: parseFloat(Moralis.Units.FromWei( share._hex,0)) * parseFloat(Moralis.Units.FromWei( totalDistributedSum._hex,18)) / parseFloat(Moralis.Units.FromWei( totalShareAtThisDist._hex,0))
               }
+              item.shares = parseInt(Moralis.Units.FromWei( share._hex,0)) //get the latest share count
               item.history.push(history)
             }
             accountReceivedData[i] = item;

@@ -87,10 +87,10 @@ const DistributionTableItem = ({data, onWithdraw}) => {
             </Box>
             <Box>
                 <Typography variant='subtitle1' sx={{p:1}}>Balance</Typography>
-                <Typography variant='h6' sx={{p:1}}>{data.balance? parseFloat(Moralis.Units.FromWei( data.revenue._hex,18))- parseFloat(Moralis.Units.FromWei( data.balance._hex,18))  : " "}</Typography>
+                <Typography variant='h6' sx={{p:1}}>{data.balance? (parseFloat(Moralis.Units.FromWei( data.revenue._hex,18))- parseFloat(Moralis.Units.FromWei( data.balance._hex,18))).toFixed(4)  : " "}</Typography>
             </Box>
             <Box sx={{display:'flex', alignItems: 'center'}}>
-                <Button variant='contained' onClick={()=> onWithdraw(data.contract, parseFloat(Moralis.Units.FromWei( data.revenue._hex,18))- parseFloat(Moralis.Units.FromWei( data.balance._hex,18)))}>Withdraw</Button>
+                <Button variant='contained' onClick={()=> onWithdraw(data.contract, (parseFloat(Moralis.Units.FromWei( data.revenue._hex,18))- parseFloat(Moralis.Units.FromWei( data.balance._hex,18)))).toFixed(4)}>Withdraw</Button>
             </Box>
             
             
