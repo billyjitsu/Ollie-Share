@@ -167,4 +167,30 @@ export function getAmountOptions (singleNFTContract, address){
     return options;
   }
 
- 
+  export function releaseOption(singleNFTContract, address){
+    let options = {
+      contractAddress: "0xb9A178E782b6fc998Aa556686428a96379087777",
+      functionName: "release",
+      abi: [{
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "contractAddress",
+            "type": "address"
+          },
+          {
+            "internalType": "address payable",
+            "name": "account",
+            "type": "address"
+          }
+        ],
+        "name": "release",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      }],
+      params:{contractAddress: singleNFTContract, account: address}
+    }
+    console.log(options);
+    return options;
+  }

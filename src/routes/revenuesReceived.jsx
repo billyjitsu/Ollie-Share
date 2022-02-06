@@ -6,7 +6,7 @@ import { useMoralis } from "react-moralis";
 import { useState, useEffect } from 'react';
 import { Button } from '@mui/material';
 import DataTable from '../Components/DataTable';
-import { getNFTOptions, getReleasedOptions, getAmountOptions } from '../Components/ScData';
+import { getNFTOptions, getReleasedOptions, getAmountOptions, releaseOption } from '../Components/ScData';
 import DistributionTable from '../Components/DistributionTable';
 import DistributionTableItem from '../Components/DistributionTableItem';
 
@@ -92,6 +92,16 @@ const RevenuesReceived = (props) => {
     
   }, [isAuthenticated]);
 
+  async function withdrawHandler(NFTContract, funds){
+    console.log("Withdraw: " +funds +" MATIC");
+    try{
+      await Moralis.executeFunction(releaseOption(NFTContract, address)); 
+    } catch (err) {
+      alert(err.message);
+    }
+    
+  }
+
   return <div>
     <ResponsiveAppBar/>
       <Typography align='center' variant='h4' sx={{p:4, 'font-weight': 'bold'}}>Revenues Received</Typography>
@@ -103,14 +113,8 @@ const RevenuesReceived = (props) => {
         Please login to see revenues that you have received.
       </Typography>}
       
-  
-      
-      
-
-
-
       <div style={{margin: "70px"}}>
-        {isAuthenticated? <DistributionTable data={data}/>: <h2> </h2>}
+        {isAuthenticated? <DistributionTable data={data} onWithdraw={withdrawHandler}/>: <h2> </h2>}
         
        </div>
   </div>;

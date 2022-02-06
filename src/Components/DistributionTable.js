@@ -3,11 +3,11 @@ import { Box } from '@mui/system';
 import React from 'react';
 import DistributionTableItem from './DistributionTableItem';
 
-const DistributionTable = ({data}) => {
+const DistributionTable = ({data, onWithdraw}) => {
   return <div>
       <Box>
 
-          {data.map((n)=>(<DistributionTableItem data={n}/>))}
+          {data.map((n)=>(<DistributionTableItem data={n} onWithdraw={onWithdraw}/>))}
 
       </Box>
   </div>;
