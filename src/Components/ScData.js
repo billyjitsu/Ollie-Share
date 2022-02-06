@@ -93,4 +93,78 @@ export function getAmountOptions (singleNFTContract, address){
     return options;
   }
 
+  //indicates the frequency of rev received
+  export function shareDistributionLengthOption(singleNFTContract, address){
+    let options = {
+      contractAddress: "0xb9A178E782b6fc998Aa556686428a96379087777",
+      functionName: "getsharesDistributionLength",
+      abi: [{
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "contractAddress",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "account",
+            "type": "address"
+          }
+        ],
+        "name": "getsharesDistributionLength",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      }],
+      params:{contractAddress: singleNFTContract, account: address}
+    }
+    console.log(options);
+    return options;
+  }
+
+  export function payeeShareAtDistributionOption(singleNFTContract, address, id){
+    let options = {
+      contractAddress: "0xb9A178E782b6fc998Aa556686428a96379087777",
+      functionName: "getPayeeShareAtDistribution",
+      abi: [{
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "contractAddress",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "account",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "distributionId",
+            "type": "uint256"
+          }
+        ],
+        "name": "getPayeeShareAtDistribution",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      }],
+      params:{contractAddress: singleNFTContract, account: address, distributionId: id}
+    }
+    console.log(options);
+    return options;
+  }
+
  

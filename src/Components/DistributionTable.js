@@ -6,7 +6,7 @@ import DistributionTableItem from './DistributionTableItem';
 const DistributionTable = ({data}) => {
   return <div>
       <Box>
-          <Typography>tada</Typography>
+
           {data.map((n)=>(<DistributionTableItem data={n}/>))}
 
       </Box>

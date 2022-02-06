@@ -60,7 +60,7 @@ function Row(props) {
         </TableCell>
         <TableCell component="th" scope="row"><Typography variant='h6' noWrap={true}>{row.name}</Typography></TableCell>
         <TableCell align="left"><Typography variant='h6' noWrap={true} sx={{width: "200px"}}>{row.contract}</Typography></TableCell>
-        <TableCell align="center"><Typography variant='h6'>{row.shares}</Typography></TableCell>
+        <TableCell align="center"><Typography variant='h6'>{row.balance? Moralis.Units.FromWei( row.balance._hex,18)  : "Loading..."}</Typography></TableCell>
         <TableCell align="center"><Typography variant='h6'>{row.revenue? Moralis.Units.FromWei( row.revenue._hex,18)  : "Loading..."}</Typography></TableCell>
         <TableCell align="center"><ReleaseButton/></TableCell>
       </TableRow>
@@ -104,23 +104,23 @@ function Row(props) {
   );
 }
 
-Row.propTypes = {
-  row: PropTypes.shape({
-    contract: PropTypes.number.isRequired,
-    balance: PropTypes.number.isRequired,
-    shares: PropTypes.number.isRequired,
-    history: PropTypes.arrayOf(
-      PropTypes.shape({
-        shares: PropTypes.number.isRequired,
-        distId: PropTypes.string.isRequired,
-        date: PropTypes.string.isRequired,
-      }),
-    ).isRequired,
-    name: PropTypes.string.isRequired,
-    revenue: PropTypes.number.isRequired,
+// Row.propTypes = {
+//   row: PropTypes.shape({
+//     contract: PropTypes.number.isRequired,
+//     balance: PropTypes.number.isRequired,
+//     shares: PropTypes.number.isRequired,
+//     history: PropTypes.arrayOf(
+//       PropTypes.shape({
+//         shares: PropTypes.number.isRequired,
+//         distId: PropTypes.string.isRequired,
+//         date: PropTypes.string.isRequired,
+//       }),
+//     ).isRequired,
+//     name: PropTypes.string.isRequired,
+//     revenue: PropTypes.number.isRequired,
 
-  }).isRequired,
-};
+//   }).isRequired,
+// };
 //const rows = [];
 // const rows = [
 //   createData('Ollies Audition Tape', "0x6FA8291a2DEf477CA5Af262F00a2d33e3770052e", 0.5, 0.1, 3.99),

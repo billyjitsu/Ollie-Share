@@ -111,7 +111,7 @@ const RevenuesReceived = (props) => {
 
       <div style={{margin: "70px"}}>
         {isAuthenticated? <DistributionTable data={data}/>: <h2> </h2>}
-       
+        
        </div>
   </div>;
 };
