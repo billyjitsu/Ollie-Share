@@ -107,7 +107,7 @@ const ResponsiveAppBar = () => {
     <AppBar position="static">
       <Container maxWidth="xl">
         <Toolbar disableGutters >
-        <img src={ollie} width="50px" height="50px" style={{"margin-right": "20px"}}/>
+        <img src={ollie} width="50px" height="50px" style={{"margin-right": "20px"}} onClick={console.log("clicked")}/>
           <Typography
             variant="h6"
             noWrap={false}
