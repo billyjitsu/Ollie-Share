@@ -60,7 +60,7 @@ const DistributionTableItem = ({data, onWithdraw}) => {
 
     <Box sx={{backgroundColor:"white", p:1, display:'flex', justifyContent:'center'}}>
 
-
+{data.name?
         
     <Accordion sx={{display:'flex', justifyContent:'center',  flexDirection: 'column'}} >
         <AccordionSummary
@@ -136,6 +136,11 @@ const DistributionTableItem = ({data, onWithdraw}) => {
 
         </AccordionDetails>
       </Accordion>
+
+      :
+
+      <Typography sx={{p:8}} >You do not own any NFTs with distributed revenue.</Typography>
+        }
         
     </Box>
  
