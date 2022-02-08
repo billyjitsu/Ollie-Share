@@ -111,8 +111,12 @@ const RevenuesReceived = (props) => {
   async function withdrawHandler(NFTContract, funds){
     console.log("Withdraw: " +funds +" MATIC");
     try{
-      await Moralis.executeFunction(releaseOption(NFTContract, address)); 
+      let result = await Moralis.executeFunction(releaseOption(NFTContract, address));
+      console.log("Withdrawal Result: ");
+      console.log(result);
     } catch (err) {
+      console.log("Withdrawal Error:");
+      console.log(err.message);
       alert(err.message);
     }
     
