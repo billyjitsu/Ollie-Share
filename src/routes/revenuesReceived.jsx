@@ -10,6 +10,7 @@ import { getNFTOptions, getReleasedOptions, getAmountOptions, releaseOption, sha
 import DistributionTable from '../Components/DistributionTable';
 import DistributionTableItem from '../Components/DistributionTableItem';
 import { Box } from '@mui/material';
+import ollie from "../Components/images/Ollie Loading.gif";
 
 
 const RevenuesReceived = (props) => {
@@ -160,7 +161,7 @@ const RevenuesReceived = (props) => {
       
       <div style={{margin: "70px"}}>
         {isAuthenticated && !loading? <Box sx={{display: 'flex', justifyContent:'center'}} > <Button onClick={refreshData}>Refresh</Button> </Box>: <h6></h6>}
-        {isAuthenticated && !loading?  <DistributionTable data={data} onWithdraw={withdrawHandler}/>: <Typography sx={{p:3}} variant='h5' align='center'>Loading... </Typography>}
+        {isAuthenticated && !loading?  <DistributionTable data={data} onWithdraw={withdrawHandler}/>: <Box sx={{p:5, display: 'flex', justifyContent: 'center'}} ><img src={ollie} style={{"margin-right": "20px"}} onClick={console.log("clicked")}/> </Box> }
         
        </div>
   </div>;

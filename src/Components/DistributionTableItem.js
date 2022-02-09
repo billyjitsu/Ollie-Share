@@ -54,6 +54,10 @@ const Accordion = styled((props) => (
 
 
 const DistributionTableItem = ({data, onWithdraw}) => {
+
+function truncate(str, n){
+    return (str.length > n) ? str.substr(0, n-1) + '...' : str;
+    };
     
     const {Moralis} = useMoralis();
   return <div>
@@ -75,7 +79,7 @@ const DistributionTableItem = ({data, onWithdraw}) => {
             </Box>
             <Box>
                 <Typography variant='subtitle1' sx={{p:1}}>Contract</Typography>
-                <Typography variant='h6' noWrap={false} sx={{p:1}}>{data.contract}</Typography>
+                <Typography variant='h6' noWrap={false} sx={{p:1}}>{truncate(data.contract,10)}</Typography>
             </Box>
             <Box>
                 <Typography variant='subtitle1' sx={{p:1}}>Tokens</Typography>
@@ -139,7 +143,7 @@ const DistributionTableItem = ({data, onWithdraw}) => {
 
       :
 
-      <Typography sx={{p:8}} >You do not own any NFTs with distributed revenue.</Typography>
+      <Typography sx={{p:8}} >The owner of the NFT project has not initiated revenue distribution.</Typography>
         }
         
     </Box>

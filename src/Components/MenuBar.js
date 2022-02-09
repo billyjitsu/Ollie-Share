@@ -58,7 +58,10 @@ const SearchIconWrapper = styled('div')(({ theme }) => ({
     },
   }));
 
-const pages = ['Explore', 'Stats', 'Distribute', 'Received'];
+const pages = [{name: 'Explore', link: '/explore'},
+{name: 'Stats', link: '/stats'},
+{name: 'Distribute', link: '/distribute'},
+{name: 'Received', link: '/revenuesReceived'},];
 const pages2 = [
   {name: 'Explore', link: '/explore'},
   {name: 'Stats', link: '/stats'},
@@ -147,8 +150,10 @@ const ResponsiveAppBar = () => {
               }}
             >
               {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu} >
-                  <Typography textAlign="center">{page}</Typography>
+                <MenuItem key={page.name} onClick={handleCloseNavMenu} >
+                  <Link to={page.link} style={{ textDecoration: 'none' }}>
+                    <Typography textAlign="center">{page.name}</Typography>
+                  </Link>
                 </MenuItem>
               ))}
             </Menu>
@@ -170,7 +175,7 @@ const ResponsiveAppBar = () => {
               inputProps={{ 'aria-label': 'search' }}
             />
           </Search>
-          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex', justifyContent: "flex" } }}>
+          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex', justifyContent: "center" } }}>
           
             {pages2.map((page) => (
               
